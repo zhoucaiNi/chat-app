@@ -353,6 +353,11 @@ $darkColor: #2f2d52;
             padding: 10px 15px;
             color: white;
             background-color: #5d5b8d;
+            cursor: pointer;
+
+            span {
+              width: 100%;
+            }
           }
         }
       }

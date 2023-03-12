@@ -42,6 +42,7 @@ const Input = () => {
       );
 
     } else {
+      // add text info
       await updateDoc(doc(db, "chats", data.chatId), {
         messages: arrayUnion({
           id: uuid(),
@@ -52,6 +53,7 @@ const Input = () => {
       })
     }
 
+    // add to userChats
     await updateDoc(doc(db, "userChats", currentUser.uid), {
       [data.chatId + ".lastMessage"]: {
         text
