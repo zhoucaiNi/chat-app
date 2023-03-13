@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import "../style.scss";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
@@ -15,9 +15,36 @@ import { v4 as uuid } from "uuid";
 
 const Register = () => {
   const [err, setErr] = useState(false);
-  const [userImg, setUserImg] = useState(null);
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+
+  // create a preview as a side effect, whenever selected file is changed
+  useEffect(() => {
+    if (!selectedFile) {
+      setPreview(undefined)
+      return
+    }
+
+    const objectUrl = URL.createObjectURL(selectedFile)
+    setPreview(objectUrl)
+
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl)
+  }, [selectedFile])
+
+  const onSelectFile = e => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedFile(undefined);
+      return
+    }
+
+    setSelectedFile(e.target.files[0]);
+  }
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -26,7 +53,6 @@ const Register = () => {
     const email = e.target[1].value;
     const password = e.target[2].value;
     const file = e.target[3].files[0];
-    setUserImg(file);
 
     try {
       // create user 
@@ -125,13 +151,13 @@ const Register = () => {
           <input type="text" placeholder='display name' />
           <input type="email" placeholder='email' />
           <input type="password" placeholder='password' />
-          <input style={{ display: "none" }} type="file" id="file" />
+          <input style={{ display: "none" }} type="file" id="file" onChange={onSelectFile} />
           <label htmlFor="file">
-            <AddAPhotoIcon className='photoIcon' />
+            {!preview && <AddAPhotoIcon className='photoIcon' />}
+            {selectedFile && <img src={preview} alt="avatar preview" />}
             <span> Add an avatar</span>
           </label>
           <button disabled={loading}> Sign up</button>
-          {userImg && <img src={userImg} alt="" />}
           {loading && <p> Uploading and compressing the image please wait...</p>}
           {err && <span> Something went wrong</span>}
         </form>

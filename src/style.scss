@@ -90,6 +90,12 @@ $darkColor: #2f2d52;
           }
         }
       }
+
+      img {
+        height: 50px;
+        width: 50px;
+        object-fit: cover;
+      }
     }
 
     p {
@@ -176,9 +182,7 @@ $darkColor: #2f2d52;
         border-bottom: 1px solid gray;
 
         .searchForm {
-
           padding: 10px;
-
 
           input {
             background-color: transparent;
@@ -324,6 +328,17 @@ $darkColor: #2f2d52;
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        .inputBar {
+          display: flex;
+          flex-direction: row;
+        }
+
+        img {
+          width: 40px;
+          height: 40px;
+          object-fit: cover;
+        }
 
         input {
           width: 100%;
